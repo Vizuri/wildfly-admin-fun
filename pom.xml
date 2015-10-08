@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <version>19</version>
+        <relativePath />
+    </parent>
+    <groupId>org.wildfly.quickstarts</groupId>
+    <artifactId>wildfly-quickstarts-parent</artifactId>
+    <version>9.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>WildFly Quickstarts Parent</name>
+    <description>WildFly Quickstarts Parent</description>
+    <url>https://github.com/wildfly/quickstart/</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <!-- A base list of dependency and plugin version used in the various quick starts. -->
+
+        <!-- JBoss dependency versions -->
+
+        <version.wildfly>9.0.0.Final</version.wildfly>
+
+
+        <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+
+        <!-- Define the version of the JBoss BOMs we want to import to specify tested stacks. -->
+        <version.jboss.bom>9.0.0.Final</version.jboss.bom>
+
+
+        <version.jboss.spec.javaee.7.0>1.0.3.Final</version.jboss.spec.javaee.7.0>
+
+
+        <!-- Other dependency versions -->
+        <version.dom4j>1.6</version.dom4j>
+        <version.javax.servlet.jstl>1.2</version.javax.servlet.jstl>
+        <version.log4j>1.2.16</version.log4j>
+        <version.org.eclipse.m2e>1.0.0</version.org.eclipse.m2e>
+        <version.org.apache.wicket>1.5.5</version.org.apache.wicket>
+        <version.net.ftlines.wicket-cdi>1.2</version.net.ftlines.wicket-cdi>
+        <version.ro.isdc.wro4j>1.4.4</version.ro.isdc.wro4j>
+        <version.org.codehaus.mojo.gwt.maven.plugin>2.4.0</version.org.codehaus.mojo.gwt.maven.plugin>
+
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${version.war.plugin}</version>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <!-- The WildFly plugin deploys your apps to a local WildFly container -->
+                <!-- Disabling it here means that we don't try to deploy this POM! -->
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.10.b1</version>
+                    <configuration>
+                        <header>${basedir}/dist/license.txt</header>
+                        <aggregate>true</aggregate>
+                        <strictCheck>true</strictCheck>
+                        <excludes>
+                            <exclude>target/**</exclude>
+                            <exclude>.clover/**</exclude>
+                        </excludes>
+                        <encoding>UTF-8</encoding>
+                        <headerDefinitions>
+                            <headerDefinition>dist/headerdefinition.xml</headerDefinition>
+                        </headerDefinitions>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.wildfly.plugins</groupId>
+                    <artifactId>wildfly-maven-plugin</artifactId>
+                    <version>${version.wildfly.maven.plugin}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <!-- The WildFly plugin deploys your apps to a local WildFly container -->
+            <!-- Disabling it here means that we don't try to deploy this POM! -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.maven.plugin}</version>
+                <inherited>false</inherited>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <!-- All the quickstarts that require Postgres to be running -->
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>default</name>
+                    <value>!disabled</value>
+                </property>
+            </activation>
+            <modules>
+                <!-- All the modules that require nothing but WildFly -->
+                <module>app-client</module>
+                <module>bean-validation</module>
+                <module>bmt</module>
+                <module>carmart</module>
+                <module>carmart-tx</module>
+                <module>cdi-alternative</module>
+                <module>cdi-injection</module>
+                <module>cdi-portable-extension</module>
+                <module>cdi-veto</module>
+                <module>deltaspike-authorization</module>
+                <module>deltaspike-beanbuilder</module>
+                <module>deltaspike-projectstage</module>
+                <module>ejb-asynchronous</module>
+                <module>ejb-in-ear</module>
+                <module>ejb-in-war</module>
+                <module>ejb-remote</module>
+                <module>ejb-security</module>
+                <module>ejb-security-interceptors</module>
+                <module>ejb-security-plus</module>
+                <module>ejb-throws-exception</module>
+                <module>ejb-multi-server</module>
+                <module>greeter</module>
+                <module>helloworld</module>
+                <module>helloworld-html5</module>
+                <module>helloworld-jdg</module>
+                <module>helloworld-jms</module>
+                <module>helloworld-mdb</module>
+                <module>helloworld-rf</module>
+                <module>helloworld-rs</module>
+                <module>helloworld-singleton</module>
+                <module>helloworld-websocket</module>
+                <module>helloworld-ws</module>
+                <module>hibernate3</module>
+                <module>hibernate4</module>
+                <module>kitchensink</module>
+                <module>kitchensink-angularjs</module>
+                <module>kitchensink-ear</module>
+                <module>kitchensink-html5-mobile</module>
+                <module>kitchensink-jsp</module>
+                <module>kitchensink-ml</module>
+                <module>kitchensink-ml-ear</module>
+                <module>logging-tools</module>
+                <module>mail</module>
+                <module>numberguess</module>
+                <module>payment-cdi-event</module>
+                <module>security-vault-askpass</module>
+                <module>servlet-async</module>
+                <module>servlet-filterlistener</module>
+                <module>servlet-security</module>
+                <module>shopping-cart</module>
+                <module>temperature-converter</module>
+                <module>thread-racing</module>
+                <module>wicket-ear</module>
+                <module>wicket-war</module>
+                <module>xml-dom4j</module>
+                <module>xml-jaxp</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- All the quickstarts that require Postgres to be running -->
+            <id>requires-postgres</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>requires-postgres</name>
+                    <value>!disabled</value>
+                </property>
+            </activation>
+            <modules>
+                <module>cmt</module>
+                <module>jts</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- All the quickstarts that have weird requirements around deployment that Maven can't handle -->
+            <id>complex-dependencies</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>complex-dependencies</name>
+                    <value>!disabled</value>
+                </property>
+            </activation>
+            <modules>
+                <module>cluster-ha-singleton</module>
+                <module>jax-rs-client</module>
+                <module>jts</module>
+                <module>inter-app</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- All the quickstarts that require the "standalone-full" profile
+                to be in use -->
+            <id>requires-full</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>requires-full</name>
+                    <value>!disabled</value>
+                </property>
+            </activation>
+            <modules>
+                <module>helloworld-mdb</module>
+                <module>jta-crash-rec</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- All the quickstarts that require the xts to be enabled -->
+            <id>requires-xts</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>requires-xts</name>
+                    <value>!disabled</value>
+                </property>
+            </activation>
+            <modules>
+                <module>wsat-simple</module>
+                <module>wsba-coordinator-completion-simple</module>
+                <module>wsba-participant-completion-simple</module>
+            </modules>
+        </profile>
+        <profile>
+            <!-- All the quickstarts that don't actually use Maven. Don't
+                activate this profile! We just include this for completeness. -->
+            <id>non-maven</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>h2-console</module>
+                <module>jts-distributed-crash-rec</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>
