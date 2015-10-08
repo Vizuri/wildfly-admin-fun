@@ -1,0 +1,2 @@
+connect
+deploy kitchensink/target/wildfly-kitchensink-9.0.0-SNAPSHOT.war --runtime-name=wildfly-kitchensink.war --server-groups=main-server-group,other-server-group
