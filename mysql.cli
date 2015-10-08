@@ -1,0 +1,10 @@
+# Have to do this before connecting in domain mode, would have to do this to each node
+module add --name=org.mysql --resources=mysql-connector-java-5.1.36.jar --dependencies=javax.api,javax.transaction.api
+
+connect
+
+# Add the driver
+/profile=full/subsystem=datasources/jdbc-driver=mysql:add(driver-name=mysql,driver-module-name=org.mysql,driver-xa-datasource-class-name=com.mysql.jdbc.jdbc2.optional.MysqlXADataSource)
+
+# Add the data source to the profile 'full', making it available to both server groups
+/profile=full/subsystem=datasources/data-source=QuickStartDS:add(jndi-name=java:jboss/datasources/KitchensinkQuickstartDS, connection-url=jdbc:mysql://localhost:3306/wildfly, driver-name=mysql, user-name=wildfly, password=wildfly, min-pool-size=5, max-pool-size=15)
