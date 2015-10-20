@@ -16,7 +16,7 @@ Void removeApp(CLI cli, String serverGroup, String version) {
 	println("Version " + version + " removal from group " + serverGroup + " result: " + result) 
 }
 
-Void addAdpp(CLI cli, String serverGroup, String version) {
+Void addApp(CLI cli, String serverGroup, String version) {
 	result = cli.cmd("deploy --name=wildfly-kitchensink-" + version + ".war --server-groups=" + serverGroup)
 	response = result.getResponse() 
 	result = response.get("result")
