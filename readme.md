@@ -1,6 +1,7 @@
-# Wildfly Admin Examples
+# WildFly Admin Examples
 
-Here are some examples of deploying applications to Wildfly using several means, and includes some configuration tasks as well.
+WildFly is an application server that was formerly known as JBoss AS.
+The following are examples of deploying applications to WildFly using several means and includes some configuration tasks.
 
 The different task groups are sectioned off in **git** branches.
 
@@ -8,10 +9,10 @@ The different task groups are sectioned off in **git** branches.
 
 These examples assume that you have a local Wildfly 8.2.1.Final instance installed.  If you have a JDK installed, this can be as easy as:
 
-* Unzip the server from [Wildfly 8.2.1.Final Download](http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.zip)
+* Unzip the server from [WildFly 8.2.1.Final Download](http://download.jboss.org/wildfly/8.2.1.Final/wildfly-8.2.1.Final.zip)
 * Examples assume an environment variable $JBOSS_HOME that points to that directory exists
   * e.g. export JBOSS_HOME=/Users/home/wildfly-8.2.1.Final
-* Create a managment user (to be used in the Management Web UI)
+* Create a managment user (to be used in the Management Web UI), do not specify any groups for the user, default to the ManagementRealm and answer `no` on connecting to another AS process
   * $JBOSS_HOME/bin/add-user.sh
   * Examples will use 1 window to run the server and 1 to run code examples
 
@@ -22,16 +23,22 @@ Quick demonstration of interacting with a standalone server, using the maven plu
 
 ### Deploy kitchensink to standalone with maven script
 
-Start server in one window:  
+Start 2 terminal window sessions and start the server in one of them:  
 	
 	$JBOSS_HOME/standalone.sh
 	
-Checkout code in another, build and deploy: 
+Checkout code in the other shell terminal, build and deploy: 
 
+	git clone https://github.com/Vizuri/wildfly-admin-fun
+	
+	cd wildfly-admin-fun
+	
 	git checkout step0-branch
 	
 	mvn -pl kitchensink clean package wildfly:deploy
 	
+Using your browser, go to the following URLs to your server using different tabs:
+
 Demo App: [http://localhost:8080/wildfly-kitchensink](http://localhost:8080/wildfly-kitchensink)
 
 Management Console: [http://localhost:9990](http://localhost:9990) (login with management user created in setup)
@@ -40,7 +47,7 @@ Undeploy the application using Maven plugin:
 
 	mvn -pl kitchensink wildfly:undeploy
 	
-Read more about the [Wildfly Maven plugin](https://docs.jboss.org/wildfly/plugins/maven/latest/)
+Read more about the [WildFly Maven plugin](https://docs.jboss.org/wildfly/plugins/maven/latest/)
 
 ### Deploy to domain with management UI
 * Stop running standalone server (ctrl-c on window)
@@ -90,6 +97,8 @@ _Using different in-memory databases…_  Changes in one server are not reflecte
 **Cleanup…** Deployments > remove
 
 ## Step 2: Configure Database through CLI
+
+To perform this step you will need access to a local MySQL database server.
 
 ### Setup…
 Create a local mysql database ‘wildfly’:
