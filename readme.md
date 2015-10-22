@@ -24,7 +24,7 @@ Quick demonstration of interacting with a standalone server, using the maven plu
 
 Start server in one window:  
 	
-	$JBOSS_HOME/standalone.sh
+	$JBOSS_HOME/bin/standalone.sh
 	
 Checkout code in another, build and deploy: 
 
@@ -36,15 +36,24 @@ Demo App: [http://localhost:8080/wildfly-kitchensink](http://localhost:8080/wild
 
 Management Console: [http://localhost:9990](http://localhost:9990) (login with management user created in setup)
 
+Go to the WildFly tab and click on the `/rest/members` link to have the application show the built-in members.
+
+Use the `member registration` area to enter more members and then use the rest link to view them.
+
+Try entering a duplicate and see what happens.
+
 Undeploy the application using Maven plugin:
 
 	mvn -pl kitchensink wildfly:undeploy
+	
+If you try to use the WildFly tab again it should fail.
 	
 Read more about the [Wildfly Maven plugin](https://docs.jboss.org/wildfly/plugins/maven/latest/)
 
 ### Deploy to domain with management UI
 * Stop running standalone server (ctrl-c on window)
-* Start domain: $JBOSS_HOME/domain.sh
+* Start domain: $JBOSS_HOME/bin/domain.sh
+* This will start 2 servers, each on different ports
 * Use UI to deploy  [http://localhost:9990](http://localhost:9990 "Wildfly admin console")
 	* Deployments
 	* Add > Choose file kitchensink/target/wildfly-kitchensink.war
